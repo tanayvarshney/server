@@ -28,7 +28,7 @@
 
 # Triton Inference Server Documentation
 
-| [Installation](README.md#installation) | [Getting Started](README.md#getting-started) | [User Guide](README.md#user-guide) | [API Guide](doc_files/protocol/README.md) | [Additional Resources](README#resources) | [Customization Guide](README.md#customization-guide) |
+| [Installation](README.md#installation) | [Getting Started](README.md#getting-started) | [User Guide](README.md#user-guide) | [API Guide](doc_files/protocol/README.md) | [Additional Resources](README.md#resources) | [Customization Guide](README.md#customization-guide) |
 | ------------ | --------------- | --------------- | ------------ | --------------- | --------------- | 
 
 ## Installation
@@ -55,7 +55,7 @@ This guide covers the simplest possible workflow for deploying a model using a T
 - [Run Triton](doc_files/quickstart.md#run-triton)
 - [Run a sample Client](doc_files/quickstart.md#running-a-sample-client)
 
-Triton Inference Server has a considerble list versrtile and powerful features. All new users are recommended to explore the [User Guide](README.md#user-guide) and the [additional resources](README#resources) sections for features most relevant to their usecase. 
+Triton Inference Server has a considerble list versrtile and powerful features. All new users are recommended to explore the [User Guide](README.md#user-guide) and the [additional resources](README.md#resources) sections for features most relevant to their usecase. 
 
 ## User Guide
 The User Guide describes how to use Triton as an inference solution, including information on how to configure Triton, how to organize and configure your models, how to use the C++ and Python clients, etc. 
