@@ -58,7 +58,17 @@ This guide covers the simplest possible workflow for deploying a model using a T
 Triton Inference Server has a considerble list versrtile and powerful features. All new users are recommended to explore the [User Guide](README.md#user-guide) and the [additional resources](README.md#resources) sections for features most relevant to their usecase. 
 
 ## **User Guide**
-The User Guide describes how to use Triton as an inference solution, including information on how to configure Triton, how to organize and configure your models, how to use the C++ and Python clients, etc. 
+The User Guide describes how to use Triton as an inference solution, including information on how to configure Triton, how to organize and configure your models, how to use the C++ and Python clients, etc. This guide includes the following:
+* Creating a Model Repository [[Overview](README.md#model-repository) || [Details](doc_files/model_repository.md)]
+* Writing a Model Configuration [[Overview](README.md#model-configuration) || [Details](doc_files/model_configuration.md)]
+* Buillding a Model Pipeline [[Overview](README.md#model-pipeline)]
+* Managing Model Availablity [[Overview](README.md#model-management) || [Details](doc_files/model_management.md)]
+* Collecting Server Metrics [[Overview](README.md#metrics) || [Details](doc_files/metrics.md)]
+* Supporting Custom Ops/layers [[Overview](README.md#framework-custom-operations) || [Details]((doc_files/custom_operations.md))]
+* Using the Client API [[Overview](README.md#client-libraries-and-examples) || [Details](https://github.com/triton-inference-server/client)]
+* Analyzing Performance [[Overview](README.md#performance-analysis)]
+* Deploying on edge (Jetson) [[Overview](README.md#jetson-and-jetpack)]
+
 
 ### Model Repository 
 [Model Repositories](doc_files/model_repository.md) are the organizational hub for using Triton. All models, configuration files, and additional resources need specifically to serve the models are housed inside a model repository.
@@ -68,76 +78,96 @@ The User Guide describes how to use Triton as an inference solution, including i
 ### Model Configuration
 
 A [Model Configuration](doc_files/model_configuration.md) file is the primary point of contact for all the model level tweaks, whether it is about reshaping the output tensor or directing Triton to build dynamic batch, all model level "knobs" are handled in a configuration file. 
-  - [Required Model Configuration](doc_files/model_configuration.md#minimal-model-configuration)
-    - [Maximum Batch Size - Batching and Non-Batching Models](doc_files/model_configuration.md#maximum-batch-size)
-    - [Input and Output Tensors](doc_files/model_configuration.md#inputs-and-outputs)
-      - [Tensor Datatypes](doc_files/model_configuration.md#datatypes)
-      - [Tensor Reshape](doc_files/model_configuration.md#reshape)
-      - [Shape Tensor](doc_files/model_configuration.md#shape-tensors)
-  - [Auto-Generate Required Model Configuration](doc_files/model_configuration.md#auto-generated-model-configuration)
-  - [Version Policy](doc_files/model_configuration.md#version-policy)
-  - [Instance Groups](doc_files/model_configuration.md#instance-groups)
-    - [Specifying Multiple Model Instances](doc_files/model_configuration.md#multiple-model-instances)
-    - [CPU and GPU Instances](doc_files/model_configuration.md#cpu-model-instance)
-    - [Configuring Rate Limiter](doc_files/model_configuration.md#rate-limiter-configuration)
-  - [Optimization Settings](doc_files/model_configuration.md#optimization_policy)
-    - [Framework-Specific Optimization](doc_files/optimization.md#framework-specific-optimization)
-      - [ONNX-TensorRT](doc_files/optimization.md#onnx-with-tensorrt-optimization-ort-trt)
-      - [ONNX-OpenVINO](doc_files/optimization.md#onnx-with-openvino-optimization)
-      - [TensorFlow-TensorRT](doc_files/optimization.md#tensorflow-with-tensorrt-optimization-tf-trt)
-      - [TensorFlow-Mixed-Precision](doc_files/optimization.md#tensorflow-automatic-fp16-optimization)
-    - [NUMA Optimization](doc_files/optimization.md#numa-optimization)
-  - [Scheduling and Batching](doc_files/model_configuration.md#scheduling-and-batching)
-    - [Default Scheduler - Non-Batching](doc_files/model_configuration.md#default-scheduler)
-    - [Dynamic Batcher](doc_files/model_configuration.md#dynamic-batcher)
-      - [How to Configure Dynamic Batcher](doc_files/model_configuration.md#recommended-configuration-process)
-        - [Delayed Batching](doc_files/model_configuration.md#delayed-batching)
-        - [Preferred Batch Size](doc_files/model_configuration.md#preferred-batch-sizes)
-      - [Preserving Request Ordering](doc_files/model_configuration.md#preserve-ordering)
-      - [Priority Levels](doc_files/model_configuration.md#priority-levels)
-      - [Queuing Policies](doc_files/model_configuration.md#queue-policy)
-      - [Ragged Batching](doc_files/ragged_batching.md)
-    - [Sequence Batcher](doc_files/model_configuration.md#sequence-batcher)
-      - [Stateful Models](doc_files/architecture.md#stateful-models)
-      - [Control Inputs](doc_files/architecture.md#control-inputs)
-      - [Implicit State - Stateful Inference Using a Stateless Model](doc_files/architecture.md#implicit-state-management)
-      - [Sequence Scheduling Strategies](doc_files/architecture.md#scheduling-strateties)
-        - [Direct](doc_files/architecture.md#direct)
-        - [Oldest](doc_files/architecture.md#oldest)
-    - [Rate Limiter](doc_files/rate_limiter.md)
-  - [Model Warmup](doc_files/model_configuration.md#model-warmup)
-  - [Inference Request/Response Cache](doc_files/model_configuration.md#response-cache)
+
+#### Required Model Configuration
+
+Triton Inference Server requires some [Minimum Required parameters](doc_files/model_configuration.md#minimal-model-configuration)  to be filled in the model configuration. These required parameters essentially pertain to the structure of the model. For TensorFlow, ONNX and TensorRT models, users can rely on Triton to [Auto Generate](doc_files/model_configuration.md#auto-generated-model-configuration) the Minimum Required model configuration.
+- [Maximum Batch Size - Batching and Non-Batching Models](doc_files/model_configuration.md#maximum-batch-size)
+- [Input and Output Tensors](doc_files/model_configuration.md#inputs-and-outputs)
+    - [Tensor Datatypes](doc_files/model_configuration.md#datatypes)
+    - [Tensor Reshape](doc_files/model_configuration.md#reshape)
+    - [Shape Tensor](doc_files/model_configuration.md#shape-tensors)
+
+#### Versioning Models
+Users need the ability to save and serve different versions of models based on business requirements. Triton allows users to set policies to make available different versions of the model as needed. [Learn More](doc_files/model_configuration.md#version-policy).
+
+#### Instance Groups
+Triton allows users to use of multiple instances on the same model. Users can specify the number of instances, specific GPUs, or deploy instances on CPU. [Learn more](doc_files/model_configuration.md#instance-groups).
+- [Specifying Multiple Model Instances](doc_files/model_configuration.md#multiple-model-instances)
+- [CPU and GPU Instances](doc_files/model_configuration.md#cpu-model-instance)
+- [Configuring Rate Limiter](doc_files/model_configuration.md#rate-limiter-configuration)
+
+#### Optimization Settings
+
+The model configuration ModelOptimizationPolicy property is used to specify optimization and prioritization settings for a model. These settings control if/how a model is optimized by the backend and how it is scheduled and executed by Triton. See the [ModelConfig protobuf](https://github.com/triton-inference-server/common/blob/main/protobuf/model_config.proto) and [optimization documentation](https://github.com/tanayvarshney/server/blob/main/docs/doc_files/optimization.md#optimization) for the currently available settings.
+- [Framework-Specific Optimization](doc_files/optimization.md#framework-specific-optimization)
+  - [ONNX-TensorRT](doc_files/optimization.md#onnx-with-tensorrt-optimization-ort-trt)
+  - [ONNX-OpenVINO](doc_files/optimization.md#onnx-with-openvino-optimization)
+  - [TensorFlow-TensorRT](doc_files/optimization.md#tensorflow-with-tensorrt-optimization-tf-trt)
+  - [TensorFlow-Mixed-Precision](doc_files/optimization.md#tensorflow-automatic-fp16-optimization)
+- [NUMA Optimization](doc_files/optimization.md#numa-optimization)
+
+#### Scheduling and Batching
+
+Triton supports batching individual inference requests to improve compute resource utilization. This is extremely important as individual queries will not saturate GPU resources thus not leveraging the parallelism provided by GPUs to its extent. Learn more about Triton's [Batcher and Scheduler](doc_files/model_configuration.md#scheduling-and-batching).  
+- [Default Scheduler - Non-Batching](doc_files/model_configuration.md#default-scheduler)
+- [Dynamic Batcher](doc_files/model_configuration.md#dynamic-batcher)
+  - [How to Configure Dynamic Batcher](doc_files/model_configuration.md#recommended-configuration-process)
+    - [Delayed Batching](doc_files/model_configuration.md#delayed-batching)
+    - [Preferred Batch Size](doc_files/model_configuration.md#preferred-batch-sizes)
+  - [Preserving Request Ordering](doc_files/model_configuration.md#preserve-ordering)
+  - [Priority Levels](doc_files/model_configuration.md#priority-levels)
+  - [Queuing Policies](doc_files/model_configuration.md#queue-policy)
+  - [Ragged Batching](doc_files/ragged_batching.md)
+- [Sequence Batcher](doc_files/model_configuration.md#sequence-batcher)
+  - [Stateful Models](doc_files/architecture.md#stateful-models)
+  - [Control Inputs](doc_files/architecture.md#control-inputs)
+  - [Implicit State - Stateful Inference Using a Stateless Model](doc_files/architecture.md#implicit-state-management)
+  - [Sequence Scheduling Strategies](doc_files/architecture.md#scheduling-strateties)
+    - [Direct](doc_files/architecture.md#direct)
+    - [Oldest](doc_files/architecture.md#oldest)
+
+#### Rate Limiter
+Rate limiter manages the rate at which requests are scheduled on model instances by Triton. The rate limiter operates across all models loaded in Triton to allow cross-model prioritization. [Learn more](doc_files/rate_limiter.md).
+
+#### Model Warmup
+For a few of the Backends(check [Additional Resources](README.md#resources)) some or all of intialization is deffered till the first inference request is received, the benefit is resource conservation but comes with the downside of the initial requests getting processed slower than expected. Users can pre-"warm up" the model by instructing Triton to intialize the model. [Learn more](doc_files/model_configuration.md#model-warmup). 
+
+#### Inference Request/Response Cache
+Triton has a (Beta) feature which allows inference responses to get cached. [Learn More](https://github.com/triton-inference-server/server/blob/main/docs/response_cache.md).
+
 ### Model Pipeline
 Building ensembles is as easy as adding an addition configuration file which outlines the specific flow of tensors from one model to another. Further changes in existing (individual)model configurations might be needed base on the use case. 
-  - [Model Ensemble](doc_files/architecture.md#ensemble-models)
-  - [Business Logic Scripting (BLS)](https://github.com/triton-inference-server/python_backend#business-logic-scripting)
+- [Model Ensemble](doc_files/architecture.md#ensemble-models)
+- [Business Logic Scripting (BLS)](https://github.com/triton-inference-server/python_backend#business-logic-scripting)
 ### Model Management
 Users can specify policies in the model configuration for loading and unloading of models. This [section](doc_files/model_management.md) covers user selectable policy details.  
-  - [Explicit Model Loading and Unloading](doc_files/model_management.md#model-control-mode-explicit)
-  - [Modifying the Model Repository](doc_files/model_management.md#modifying-the-model-repository)
+- [Explicit Model Loading and Unloading](doc_files/model_management.md#model-control-mode-explicit)
+- [Modifying the Model Repository](doc_files/model_management.md#modifying-the-model-repository)
 ### Metrics
 Triton provides Prometheus metrics like GPU Utilization, Memory usage, latency and more. Learn about [availble metrics](doc_files/metrics.md). 
 ### Framework Custom Operations
 Some frameworks provide the option of building custom layers/operations. These can be added to specific Triton Backends for the those frameworks. [Learn more](doc_files/custom_operations.md)
-  - [TensorRT](doc_files/custom_operations.md#tensorrt)
-  - [TensorFlow](doc_files/custom_operations.md#tensorflow)
-  - [PyTorch](doc_files/custom_operations.md#pytorch)
-  - [ONNX](doc_files/custom_operations.md#onnx)
+- [TensorRT](doc_files/custom_operations.md#tensorrt)
+- [TensorFlow](doc_files/custom_operations.md#tensorflow)
+- [PyTorch](doc_files/custom_operations.md#pytorch)
+- [ONNX](doc_files/custom_operations.md#onnx)
 ### Client Libraries and Examples
 Use the [Triton Client](https://github.com/triton-inference-server/client) API to integrate client applications over the network HTTP/gRPC API or integrate applications directly with Triton using CUDA shared memory to remove network overhead.
-  - [C++ HTTP/GRPC Libraries](https://github.com/triton-inference-server/client#client-library-apis)
-  - [Python HTTP/GRPC Libraries](https://github.com/triton-inference-server/client#client-library-apis)
-  - [Java HTTP Library](https://github.com/triton-inference-server/client/tree/main/src/java)
-  - GRPC Generated Libraries
-    - [go](https://github.com/triton-inference-server/client/tree/main/src/grpc_generated/go)
-    - [Java/Scala](https://github.com/triton-inference-server/client/tree/main/src/grpc_generated/java)
-    - [Javascript](https://github.com/triton-inference-server/client/tree/main/src/grpc_generated/javascript)
-  - [Shared Memory Extention](https://github.com/triton-inference-server/server/blob/main/docs/protocol/extension_shared_memory.md)
+- [C++ HTTP/GRPC Libraries](https://github.com/triton-inference-server/client#client-library-apis)
+- [Python HTTP/GRPC Libraries](https://github.com/triton-inference-server/client#client-library-apis)
+- [Java HTTP Library](https://github.com/triton-inference-server/client/tree/main/src/java)
+- GRPC Generated Libraries
+  - [go](https://github.com/triton-inference-server/client/tree/main/src/grpc_generated/go)
+  - [Java/Scala](https://github.com/triton-inference-server/client/tree/main/src/grpc_generated/java)
+  - [Javascript](https://github.com/triton-inference-server/client/tree/main/src/grpc_generated/javascript)
+- [Shared Memory Extention](https://github.com/triton-inference-server/server/blob/main/docs/protocol/extension_shared_memory.md)
 ### Performance Analysis
-Understanding Inference perfomance is key to better resource utilization. Use Triton's [Tools](doc_files/optimization.md) to costomize your deployment.
-  - [Model Analyzer](doc_files/model_analyzer.md)
-  - [Performance Analyzer](doc_files/perf_analyzer.md)
-  - [Inference Request Tracing](doc_files/trace.md)
+Understanding Inference perfomance is key to better resource utilization. Use Triton's Tools to costomize your deployment.
+- [Performance Tuning Guide](doc_files/performance_tuning.md)
+- [Model Analyzer](doc_files/model_analyzer.md)
+- [Performance Analyzer](doc_files/perf_analyzer.md)
+- [Inference Request Tracing](doc_files/trace.md)
 ### Jetson and JetPack
 Triton can be deployed on edge devices. Explore [resources](doc_files/jetson.md) and [examples](examples/jetson/README.md).
 
