@@ -26,12 +26,12 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-# Triton Inference Server Documentation
+# **Triton Inference Server Documentation**
 
 | [Installation](README.md#installation) | [Getting Started](README.md#getting-started) | [User Guide](README.md#user-guide) | [API Guide](doc_files/protocol/README.md) | [Additional Resources](README.md#resources) | [Customization Guide](README.md#customization-guide) |
 | ------------ | --------------- | --------------- | ------------ | --------------- | --------------- | 
 
-## Installation
+## **Installation**
 Before you can use the Triton Docker image you must install
 [Docker](https://docs.docker.com/engine/install). If you plan on using
 a GPU for inference you must also install the [NVIDIA Container
@@ -47,7 +47,7 @@ $ docker pull nvcr.io/nvidia/tritonserver:<yy.mm>-py3
 
 Where \<yy.mm\> is the version of Triton that you want to pull. For a complete list of all the variants and versions of the Triton Inference Server Container,  visit the [NGC Page](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/tritonserver). More information about customizing the Triton Container can be found in [this section](https://github.com/triton-inference-server/server/blob/main/docs/compose.md) of the User Guide.
 
-## Getting Started
+## **Getting Started**
 
 This guide covers the simplest possible workflow for deploying a model using a Triton Inference Server.
 
@@ -57,7 +57,7 @@ This guide covers the simplest possible workflow for deploying a model using a T
 
 Triton Inference Server has a considerble list versrtile and powerful features. All new users are recommended to explore the [User Guide](README.md#user-guide) and the [additional resources](README.md#resources) sections for features most relevant to their usecase. 
 
-## User Guide
+## **User Guide**
 The User Guide describes how to use Triton as an inference solution, including information on how to configure Triton, how to organize and configure your models, how to use the C++ and Python clients, etc. 
 
 ### Model Repository 
@@ -141,7 +141,7 @@ Understanding Inference perfomance is key to better resource utilization. Use Tr
 ### Jetson and JetPack
 Triton can be deployed on edge devices. Explore [resources](doc_files/jetson.md) and [examples](examples/jetson/README.md).
 
-## Resources
+## **Resources**
 
 The following resources are recommended to explore the full suite of Triton Inference Server's functionalities.
 - **Clients**: Triton Inference Server comes with C++, Python and Java APIs with which users can send HTTP/REST or gRPC(possible extensions for other languages) requests. Explore the [client repository](https://github.com/triton-inference-server/server/tree/main/docs/protocol) for examples and documentation.
@@ -170,7 +170,7 @@ The following resources are recommended to explore the full suite of Triton Infe
 
 
 
-## Customization Guide
+## **Customization Guide**
 This guide describes how to build and test Triton and also how Triton can be extended with new functionality.
 
 - [Build](build.md)
