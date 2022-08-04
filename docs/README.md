@@ -60,11 +60,14 @@ Triton Inference Server has a considerble list versrtile and powerful features. 
 ## User Guide
 The User Guide describes how to use Triton as an inference solution, including information on how to configure Triton, how to organize and configure your models, how to use the C++ and Python clients, etc. 
 
-- **[Model Repository](doc_files/model_repository.md)**: Model Repositories are the organizational hub for using Triton. All models, configuration files, and additional resources need specifically to serve the models are housed inside a model repository.
-  - [Cloud Storage](doc_files/model_repository.md#model-repository-locations)
-  - [File Organization](doc_files/model_repository.md#model-files)
-  - [Model Versioning](doc_files/model_repository.md#model-versions)
-- **[Model Configuration](doc_files/model_configuration.md)**: A Model Configuration file is the primary point of contact for all the model level tweaks, whether it is about reshaping the output tensor or directing Triton to build dynamic batch, all model level "knobs" are handled in a configuration file. 
+### Model Repository 
+[Model Repositories](doc_files/model_repository.md) are the organizational hub for using Triton. All models, configuration files, and additional resources need specifically to serve the models are housed inside a model repository.
+- [Cloud Storage](doc_files/model_repository.md#model-repository-locations)
+- [File Organization](doc_files/model_repository.md#model-files)
+- [Model Versioning](doc_files/model_repository.md#model-versions)
+### Model Configuration
+
+A [Model Configuration](doc_files/model_configuration.md) file is the primary point of contact for all the model level tweaks, whether it is about reshaping the output tensor or directing Triton to build dynamic batch, all model level "knobs" are handled in a configuration file. 
   - [Required Model Configuration](doc_files/model_configuration.md#minimal-model-configuration)
     - [Maximum Batch Size - Batching and Non-Batching Models](doc_files/model_configuration.md#maximum-batch-size)
     - [Input and Output Tensors](doc_files/model_configuration.md#inputs-and-outputs)
@@ -104,19 +107,24 @@ The User Guide describes how to use Triton as an inference solution, including i
     - [Rate Limiter](doc_files/rate_limiter.md)
   - [Model Warmup](doc_files/model_configuration.md#model-warmup)
   - [Inference Request/Response Cache](doc_files/model_configuration.md#response-cache)
-- **Model Pipeline**: Building ensembles is as easy as adding an addition configuration file which outlines the specific flow of tensors from one model to another. Further changes in existing (individual)model configurations might be needed base on the use case. 
+### Model Pipeline
+Building ensembles is as easy as adding an addition configuration file which outlines the specific flow of tensors from one model to another. Further changes in existing (individual)model configurations might be needed base on the use case. 
   - [Model Ensemble](doc_files/architecture.md#ensemble-models)
   - [Business Logic Scripting (BLS)](https://github.com/triton-inference-server/python_backend#business-logic-scripting)
-- **[Model Management](doc_files/model_management.md)**: Users can specify policies in the model configuration for loading and unloading of models. This section covers user selectable policy details.  
+### Model Management
+Users can specify policies in the model configuration for loading and unloading of models. This [section](doc_files/model_management.md) covers user selectable policy details.  
   - [Explicit Model Loading and Unloading](doc_files/model_management.md#model-control-mode-explicit)
   - [Modifying the Model Repository](doc_files/model_management.md#modifying-the-model-repository)
-- **[Metrics](doc_files/metrics.md)** Triton provides Prometheus metrics. Learn about availble metrics. 
-- **[Framework Custom Operations](doc_files/custom_operations.md)**: Some frameworks provide the option of building custom layers/operations. These can be added to specific Triton Backends for the those frameworks.
+### Metrics
+Triton provides Prometheus metrics like GPU Utilization, Memory usage, latency and more. Learn about [availble metrics](doc_files/metrics.md). 
+### Framework Custom Operations
+Some frameworks provide the option of building custom layers/operations. These can be added to specific Triton Backends for the those frameworks. [Learn more](doc_files/custom_operations.md)
   - [TensorRT](doc_files/custom_operations.md#tensorrt)
   - [TensorFlow](doc_files/custom_operations.md#tensorflow)
   - [PyTorch](doc_files/custom_operations.md#pytorch)
   - [ONNX](doc_files/custom_operations.md#onnx)
-- **[Client Libraries and Examples](https://github.com/triton-inference-server/client)** Use the Triton Client API to integrate client applications over the network HTTP/gRPC API or integrate applications directly with Triton using CUDA shared memory to remove network overhead.
+### Client Libraries and Examples
+Use the [Triton Client](https://github.com/triton-inference-server/client) API to integrate client applications over the network HTTP/gRPC API or integrate applications directly with Triton using CUDA shared memory to remove network overhead.
   - [C++ HTTP/GRPC Libraries](https://github.com/triton-inference-server/client#client-library-apis)
   - [Python HTTP/GRPC Libraries](https://github.com/triton-inference-server/client#client-library-apis)
   - [Java HTTP Library](https://github.com/triton-inference-server/client/tree/main/src/java)
@@ -125,11 +133,13 @@ The User Guide describes how to use Triton as an inference solution, including i
     - [Java/Scala](https://github.com/triton-inference-server/client/tree/main/src/grpc_generated/java)
     - [Javascript](https://github.com/triton-inference-server/client/tree/main/src/grpc_generated/javascript)
   - [Shared Memory Extention](https://github.com/triton-inference-server/server/blob/main/docs/protocol/extension_shared_memory.md)
-- **[Performance Analysis](doc_files/optimization.md)**: Understanding Inference perfomance is key to better resource utilization. Use Triton's Tools to costomize your deployment.
+### Performance Analysis
+Understanding Inference perfomance is key to better resource utilization. Use Triton's [Tools](doc_files/optimization.md) to costomize your deployment.
   - [Model Analyzer](doc_files/model_analyzer.md)
   - [Performance Analyzer](doc_files/perf_analyzer.md)
   - [Inference Request Tracing](doc_files/trace.md)
-- **[Jetson and JetPack](doc_files/jetson.md)** Triton can be deployed on edge devices. Explore resources and examples.
+### Jetson and JetPack
+Triton can be deployed on edge devices. Explore [resources](doc_files/jetson.md) and [examples](examples/jetson/README.md).
 
 ## Resources
 
